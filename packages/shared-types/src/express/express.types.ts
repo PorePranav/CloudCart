@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from '../../../../apps/auth-service/src/types/prisma-client';
 
 declare global {
   namespace Express {

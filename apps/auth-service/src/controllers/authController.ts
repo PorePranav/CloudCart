@@ -7,7 +7,7 @@ import AppError from '../utils/AppError';
 import catchAsync from '../utils/catchAsync';
 import prisma from '../utils/prisma';
 
-import { User } from '@prisma/client';
+import { User } from '../types/prisma-client';
 import { loginSchema, signupSchema } from '../validators/authValidations';
 import { publishUserCreated } from '../services/rabbitmqService';
 

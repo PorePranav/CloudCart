@@ -7,7 +7,7 @@ import { Channel, Connection } from 'amqplib';
 import { sendEmail } from '../utils/sendEmail';
 
 import { MailOptions } from '../types';
-import { User } from '@prisma/client';
+import { User } from 'shared-types/prisma/auth';
 
 const connectRabbitMQ = async (): Promise<[Connection, Channel]> => {
   const connection = await amqp.connect(process.env.RABBITMQ_URL!);
