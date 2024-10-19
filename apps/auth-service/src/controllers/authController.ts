@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import 'shared-types';
 
 import AppError from '../utils/AppError';
 import catchAsync from '../utils/catchAsync';
