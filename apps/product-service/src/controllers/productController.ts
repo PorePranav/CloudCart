@@ -4,7 +4,10 @@ import catchAsync from '../utils/catchAsync';
 import prisma from '../utils/prisma';
 import AppError from '../utils/AppError';
 import axios from 'axios';
-import { createProductSchema } from '../validators/productValidation';
+import {
+  createProductSchema,
+  updateProductSchema,
+} from '../validators/productValidation';
 import { Category } from '../types/prisma-client';
 
 import 'shared-types';
@@ -45,6 +48,7 @@ export const getAllProducts = catchAsync(
     const products = await prisma.product.findMany();
     res.status(200).json({
       status: 'success',
+      count: products.length,
       data: products,
     });
   }
@@ -78,6 +82,67 @@ export const createProduct = catchAsync(
     res.status(201).json({
       status: 'success',
       data: newProduct,
+    });
+  }
+);
+
+export const updateProduct = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const fetchedProduct = await prisma.product.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!fetchedProduct)
+      return next(new AppError(`Product with id ${req.params.id} found`, 404));
+
+    const zodResult = updateProductSchema.safeParse(req.body);
+
+    if (!zodResult.success) {
+      const errors = zodResult.error.errors.map((err) => err.message);
+      return next(new AppError(errors.join(', '), 400));
+    }
+
+    const { name, price, stock, description } = zodResult.data;
+
+    const updatedProduct = await prisma.product.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        name,
+        price,
+        stock,
+        description,
+      },
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: updatedProduct,
+    });
+  }
+);
+
+export const deleteProduct = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const fetchedProduct = await prisma.product.findUnique({
+      where: { id: Number(req.params.id) },
+    });
+
+    if (!fetchedProduct)
+      return next(
+        new AppError(`Product with id ${req.params.id} not found`, 404)
+      );
+
+    await prisma.product.delete({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    res.status(204).json({
+      status: 'success',
+      data: null,
     });
   }
 );
