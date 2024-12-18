@@ -26,8 +26,10 @@ const sendErrorProd = (err: AppError, res: Response) => {
 };
 
 const handleDuplicateErrorDB = (err: any) => {
-  if (err.meta.target.includes('email'))
-    return new AppError('Resource with these details already exists', 400);
+  return new AppError(
+    `${err.meta.modelName} with these details already exists`,
+    400
+  );
 };
 
 const handleJWTError = () =>

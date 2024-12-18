@@ -1,14 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["tsconfig.json", "package.json"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "packages/shared-types#build"],
       "outputs": ["dist/**"]
     },
     "dev": {
       "cache": true,
       "persistent": true
     },
-    "lint": {}
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "outputs": []
+    }
   }
 }

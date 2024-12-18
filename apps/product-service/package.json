@@ -5,13 +5,17 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn src/server.ts"
+    "dev": "SET NODE_ENV=development & ts-node-dev --respawn src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^5.21.1"
+    "@prisma/client": "^6.1.0",
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "shared-types": "file:../../packages/shared-types"
   }
 }

@@ -134,6 +134,31 @@ export const createAdminUser = catchAsync(
   }
 );
 
+export const verifyUserController = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.query.jwt as string;
+    if (!token) return next(new AppError('Invalid token', 400));
+
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET!);
+
+    const fetchedUser = await prisma.user.findUnique({
+      where: {
+        id: (decoded as jwtPayload).userId,
+      },
+    });
+
+    if (!fetchedUser)
+      return next(
+        new AppError('The user belonging to this token does not exist', 401)
+      );
+
+    res.status(200).json({
+      status: 'success',
+      data: fetchedUser,
+    });
+  }
+);
+
 export const protect = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt;
