@@ -21,6 +21,17 @@ services:
     ports:
       - '5433:5432'
 
+  cart-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: product 
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - cart-db-data:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -35,4 +46,5 @@ services:
 volumes:
   auth-db-data:
   product-db-data:
+  cart-db-data:
   rabbitmq-data:

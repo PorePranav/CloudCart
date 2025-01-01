@@ -1,9 +1,9 @@
 {
-  "name": "auth-service",
+  "name": "cart-service",
   "version": "1.0.0",
-  "main": "dist/server.js",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/server.js",
     "dev": "NODE_ENV=development & ts-node-dev --respawn src/server.ts"
   },
@@ -12,8 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^5.21.1",
-    "bcryptjs": "^2.4.3",
+    "@prisma/client": "^6.1.0",
+    "prisma": "^6.1.0",
     "shared-types": "file:../../packages/shared-types"
   }
 }

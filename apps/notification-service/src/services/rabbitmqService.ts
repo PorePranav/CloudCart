@@ -17,9 +17,13 @@ const connectRabbitMQ = async (): Promise<[Connection, Channel]> => {
 
 export const listenUserCreated = catchAsync(async () => {
   const [connection, channel] = await connectRabbitMQ();
-  const queue = "user_created";
+  const exchange = 'user_created';
 
-  await channel.assertQueue(queue, { durable: false });
+  await channel.assertExchange(exchange, 'fanout', { durable: false });
+  const { queue } = await channel.assertQueue('', { exclusive: true });
+
+  await channel.bindQueue(queue, exchange, '');
+
   channel.consume(queue, async (msg) => {
     if (msg) {
       const user: User = JSON.parse(msg.content.toString());

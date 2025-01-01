@@ -12,10 +12,11 @@ const connectRabbitMQ = async (): Promise<[Connection, Channel]> => {
 
 export const publishUserCreated = catchAsync(async (user: User) => {
   const [connection, channel] = await connectRabbitMQ();
-  const queue = 'user_created';
 
-  await channel.assertQueue(queue, { durable: false });
-  channel.sendToQueue(queue, Buffer.from(JSON.stringify(user)));
+  const exchange = 'user_created';
+  await channel.assertExchange(exchange, 'fanout', { durable: false });
+
+  channel.publish(exchange, '', Buffer.from(JSON.stringify(user)));
 
   await channel.close();
   await connection.close();
